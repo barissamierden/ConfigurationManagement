@@ -1,0 +1,228 @@
+﻿@using Shared.Enums;
+
+<h1>Configuration List</h1>
+<button class="btn btn-sm btn-success" data-toggle="modal" data-target="#createConfigurationModal">Create New Configuration</button>
+
+<table id="configurationTable" class="display">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>IsActive</th>
+            <th>ApplicationName</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<!-- Create Configuration Modal -->
+<div class="modal fade" id="createConfigurationModal" tabindex="-1" aria-labelledby="createConfigurationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createConfigurationModalLabel">Create New Configuration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createConfigurationForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Type">Type</label>
+                        <select class="form-select" asp-items="Html.GetEnumSelectList<ConfigurationTypes>()" id="Type" required>
+                            <option selected>Select A Type</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Value">Value</label>
+                        <input type="text" class="form-control" id="Value" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="IsActive">IsActive</label>
+                        <input type="checkbox" class="form-control" id="IsActive">
+                    </div>
+                    <div class="form-group">
+                        <label for="ApplicationName">ApplicationName</label>
+                        <input type="text" class="form-control" id="ApplicationName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Configuration Modal -->
+<div class="modal fade" id="updateConfigurationModal" tabindex="-1" aria-labelledby="updateConfigurationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateConfigurationModalLabel">Update Configuration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateConfigurationForm">
+                    <input type="hidden" id="updateId">
+                    <div class="form-group">
+                        <label for="updateName">Name</label>
+                        <input type="text" class="form-control" id="updateName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateType">Type</label>
+                        <select class="form-select" asp-items="Html.GetEnumSelectList<ConfigurationTypes>()" id="updateType" required>
+                            <option selected>Select A Type</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateValue">Value</label>
+                        <input type="text" class="form-control" id="updateValue" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateIsActive">IsActive</label>
+                        <input type="checkbox" class="form-control" id="updateIsActive">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateApplicationName">ApplicationName</label>
+                        <input type="text" class="form-control" id="updateApplicationName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var table = $('#configurationTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "rowId": "id",
+        "searching": true,
+        "ajax": {
+            "url": "ConfigurationManagement/GetConfigurations",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+            { "data": "name" },
+            { "data": "type" },
+            { "data": "value" },
+            { "data": "isActive" },
+            { "data": "applicationName" },
+            {
+                "data": "id",
+                "render": function (data, type, row, meta) {
+                    return `
+                                <button class="btn btn-sm btn-primary" onclick="editConfiguration('${data}')">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteConfiguration('${data}')">Delete</button>
+                            `;
+                },
+                "orderable": false
+            }
+        ]
+    });
+
+    $('#createConfigurationForm').on('submit', function (e) {
+        e.preventDefault();
+        var configuration = {
+            Name: $('#Name').val(),
+            Type: $('#Type').val(),
+            Value: $('#Value').val(),
+            IsActive: $('#IsActive')[0].checked,
+            ApplicationName: $('#ApplicationName').val()
+        };
+
+        $.ajax({
+            url: '/ConfigurationManagement/CreateConfiguration',
+            type: 'POST',
+            dataType: 'json',
+            data: configuration,
+            traditional: true,
+            success: function (response) {
+                if (response.success) {
+                    table.ajax.reload();
+                    $('#createConfigurationModal').modal('hide');
+                    $('#createConfigurationForm')[0].reset();
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+    });
+
+    $('#updateConfigurationForm').on('submit', function (e) {
+        e.preventDefault();
+        var configuration = {
+            Id: $('#updateId').val(),
+            Name: $('#updateName').val(),
+            Type: $('#updateType').val(),
+            Value: $('#updateValue').val(),
+            IsActive: $('#updateIsActive')[0].checked,
+            ApplicationName: $('#updateApplicationName').val()
+        };
+
+        $.ajax({
+            url: '/ConfigurationManagement/UpdateConfiguration',
+            type: 'POST',
+            dataType: 'json',
+            data: configuration,
+            traditional: true,
+            success: function (response) {
+                if (response.success) {
+                    table.ajax.reload();
+                    $('#updateConfigurationModal').modal('hide');
+                    $('#updateConfigurationForm')[0].reset();
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        window.editConfiguration = function (id) {
+            var configuration = table.row('#' + id).data();
+            $('#updateId').val(configuration.id);
+            $('#updateName').val(configuration.name);
+            $("#updateType option").each(function () {
+                if ($(this).text() === configuration.type) {
+                    $(this).prop("selected", true);
+                }
+            });
+            $('#updateValue').val(configuration.value);
+            $('#updateIsActive').attr("checked", configuration.isActive);
+            $('#updateApplicationName').val(configuration.applicationName);
+            $('#updateConfigurationModal').modal('show');
+        };
+
+        window.deleteConfiguration = function (id) {
+            if (confirm('Bu konfigürasyonu silmek istediğinize emin misiniz?')) {
+                $.ajax({
+                    url: '/ConfigurationManagement/DeleteConfiguration',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { id: id },
+                    traditional: true,
+                    success: function (response) {
+                        if (response.success) {
+                            table.ajax.reload();
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+        };
+    });
+
+</script>
+
+
+

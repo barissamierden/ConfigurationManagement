@@ -62,7 +62,7 @@ namespace Shared.Repositories
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                filter = filter & Builders<ConfigurationItem>.Filter.Regex(x => x.Name, new MongoDB.Bson.BsonRegularExpression(searchText));
+                filter = filter & Builders<ConfigurationItem>.Filter.Regex(x => x.Name.ToLower(), new MongoDB.Bson.BsonRegularExpression(searchText.ToLower()));
             }
 
             return await _configCollection.Find(filter).Skip(pageSize * (page)).Limit(pageSize).ToListAsync();
@@ -84,7 +84,7 @@ namespace Shared.Repositories
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                filter = filter & Builders<ConfigurationItem>.Filter.Regex(x => x.Name, new MongoDB.Bson.BsonRegularExpression(searchText));
+                filter = filter & Builders<ConfigurationItem>.Filter.Regex(x => x.Name.ToLower(), new MongoDB.Bson.BsonRegularExpression(searchText.ToLower()));
             }
 
             return await _configCollection.Find(filter).CountDocumentsAsync();

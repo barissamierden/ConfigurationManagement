@@ -47,7 +47,7 @@ namespace ConfigurationReaderLib
             _configCache = new Dictionary<string, ConfigurationItem>();
 
             // Redis konfigürasyonu
-            _redisConnectionString = "localhost:6379";
+            _redisConnectionString = "redis:6379";
             _redisConnection = ConnectionMultiplexer.Connect(_redisConnectionString);
             _redisDatabase = _redisConnection.GetDatabase();
 

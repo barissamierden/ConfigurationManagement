@@ -1,7 +1,7 @@
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["ConfigurationManager.Web/ConfigurationManager.Web.csproj", "MVCApp/"]
+COPY ["ConfigurationManager.Web/ConfigurationManager.Web.csproj", "ConfigurationManager.Web/"]
 RUN dotnet restore "ConfigurationManager.Web/ConfigurationManager.Web.csproj"
 COPY . .
 WORKDIR "/src/ConfigurationManager.Web"

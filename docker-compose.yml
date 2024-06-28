@@ -16,14 +16,14 @@ services:
     ports:
       - "6379:6379"
 
-  # webapp:
-  #   build:
-  #     context: .
-  #     dockerfile: WEB.Dockerfile
-  #   depends_on:
-  #     - mongodb
-  #     - redis
-  #   ports:
-  #     - "5000:80"
+  webapp:
+    build:
+      context: .
+      dockerfile: WEB.Dockerfile
+    depends_on:
+      - mongodb
+      - redis
+    ports:
+      - "5000:80"
 volumes:
   mongo_data:

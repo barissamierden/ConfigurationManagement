@@ -34,4 +34,4 @@ Bu proje, web.config, app.config gibi dosyalarda tutulan appkey’lerin ortak ve
   * `{ Name: "MaxItemCount", Type: "Integer", Value: "50", IsActive: false, ApplicationName: "SERVICE-A" }`
 - Docker Compose kullanarak tüm servisler otomatik olarak başlatılacak ve yapılandırılacaktır.
 - Web arayüzü üzerinden konfigürasyon kayıtlarını ekleyebilir, silebilir, güncelleyebilir ve listeleyebilirsiniz.
-- MVC projesini Docker dışında ayağa kaldırmak isterseniz, `mongodb://mongodb:27017` olan bağlantı bilgisini `mongodb://localhost:27017` olarak, `redis:6379` olanı ise `localhost:6379` olarak değiştirmelisiniz.
+- MVC projesini Docker dışında ayağa kaldırmak isterseniz, `mongodb://mongodb:27017` olan bağlantı bilgisini `mongodb://localhost:27017` olarak değiştirmelisiniz.

@@ -28,6 +28,10 @@ Bu proje, web.config, app.config gibi dosyalarda tutulan appkey’lerin ortak ve
    Docker Compose ile tüm servisler başladıktan sonra, tarayıcıda http://localhost:5000 adresine gidin ve açılan sayfadaki `Configuration Management` butonuna tıklayın. Açılacak olan sayfadan konfigürasyon kayıtlarını yönetebilirsiniz.
 
 ## Ekstra Notlar
+- MongoDB Docker Compose ile başlatılırken 3 adet başlangıç kaydı otomatik olarak eklenecektir. Bunlar şu şekildedir:
+  * `{ Name: "SiteName", Type: "String", Value: "Boyner.com.tr", IsActive: true, AppicationName: "SERVICE-A" }`
+  * `{ Name: "IsBasketEnabled", Type: "Boolean", Value: "1", IsActive: true, ApplicationName: "SERVICE-B" }`
+  * `{ Name: "MaxItemCount", Type: "Integer", Value: "50", IsActive: false, ApplicationName: "SERVICE-A" }`
 - Docker Compose kullanarak tüm servisler otomatik olarak başlatılacak ve yapılandırılacaktır.
 - Web arayüzü üzerinden konfigürasyon kayıtlarını ekleyebilir, silebilir, güncelleyebilir ve listeleyebilirsiniz.
 - MVC projesini Docker dışında ayağa kaldırmak isterseniz, `mongodb://mongodb:27017` olan bağlantı bilgisini `mongodb://localhost:27017` olarak, `redis:6379` olanı ise `localhost:6379` olarak değiştirmelisiniz.

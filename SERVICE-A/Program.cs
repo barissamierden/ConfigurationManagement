@@ -30,7 +30,7 @@ namespace SERVICE_A
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var configurationReader = new ConfigurationReader("SERVICE-A", "mongodb://mongodb:27017", 10000);
+            var configurationReader = new ConfigurationReader("SERVICE-A", "mongodb://localhost:27017", 10000);
 
             services.AddSingleton(configurationReader);
             services.AddSingleton<ServiceController>();
